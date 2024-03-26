@@ -254,6 +254,7 @@ class AdministrativoController extends Controller
             $usuario->trabajos[$i]->cargo = mb_strtoupper($trabajo_cargo[$i]);
             $usuario->trabajos[$i]->save();
         }
+        $usuario->save();
         return redirect()->route('administrativos.index')->with('bien', 'Usuario modificado con éxito');
     }
 
