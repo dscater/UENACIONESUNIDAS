@@ -28,6 +28,17 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
+                            <div class="row">
+                                <div class="col-12">
+                                    <p><strong>Fecha: </strong> {{date("d/m/Y",strtotime($notificacion_estudiante->created_at))}}</p>
+                                    <p><strong>Materia: </strong> {{$notificacion_estudiante->materia->nombre}}</p>
+                                    <p><strong>Trimestre: </strong> {{$notificacion_estudiante->trimestre}}</p>
+                                    <p><strong>Área: </strong> {{$notificacion_estudiante->txt_area}}</p>
+                                    <p><strong>No. Actividad: </strong> {{$notificacion_estudiante->no_actividad}}</p>
+                                    <p><strong>Nota: </strong> {{$notificacion_estudiante->nota}}</p>
+                                    <p><strong>Descripción: </strong> {{$notificacion_estudiante->descripcion}}</p>
+                                </div>
+                            </div>
                         </div>
                         <!-- /.card-body -->
                     </div>

@@ -114,7 +114,7 @@ class CalificacionController extends Controller
 
         if ((int) $nota > 0 || ($notificacion_estudiante && $notificacion_estudiante->nota != $nota)) {
 
-            $desc = "Nota registrada area " . $areas[$area] . ", actividad nro. " . $nro_actividad;
+            $desc = "Nota registrada Área " . $areas[$area] . ", actividad no. " . $nro_actividad;
             if ($notificacion_estudiante) {
                 $notificacion_estudiante->update([
                     "estudiante_id" => $calificacion_estudiante->inscripcion->estudiante->id,

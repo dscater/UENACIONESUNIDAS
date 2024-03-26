@@ -5,6 +5,7 @@ let vacio = `<tr class="vacio">
 let select_gestion = $("#select_gestion");
 let select_materia = $("#select_materia");
 let select_trimestre = $("#select_trimestre");
+let enviando_nota = null;
 
 $(document).ready(function () {
     obtieneMaterias();
@@ -70,44 +71,71 @@ $(document).ready(function () {
             promedio_final = promedio_final.toFixed(0);
             pf.text(promedio_final);
 
-            $.ajax({
-                headers: {
-                    "x-csrf-token": $("#token").val(),
-                },
-                type: "POST",
-                url: $("#urlStoreCalificacion").val(),
-                data: {
-                    calificacion: calificacion_id,
-                    actividad: data_actividad,
-                    nota: nota,
-                    promedio: suma_calificacion,
-                    area: data_area,
-                    promedio_final: promedio_final,
-                    trimestre: select_trimestre.val(),
-                },
-                dataType: "json",
-                success: function (response) {
-                    if (response.error_nota) {
-                        swal.fire({
-                            title: "Error",
-                            icon: "error",
-                            text: `La nota no puede superar los ${response.maximo} puntos.`,
-                            confirmButtonText: "Aceptar",
-                            confirmButtonColor: "#007bff",
-                        });
-                        td.children("input").val(response.nota);
-                        calculaPromedio(td);
-                    }
+            clearTimeout(enviando_nota);
 
-                    fila.addClass("correcto");
-                    setTimeout(function () {
-                        fila.removeClass("correcto");
-                    }, 700);
-                },
-            });
+            enviando_nota = setTimeout(() => {
+                console.log("Guardando...");
+                guardar_nota(
+                    calificacion_id,
+                    data_actividad,
+                    nota,
+                    suma_calificacion,
+                    data_area,
+                    promedio_final,
+                    fila,
+                    td
+                );
+            }, 700);
         }
     );
 });
+
+function guardar_nota(
+    calificacion_id,
+    data_actividad,
+    nota,
+    suma_calificacion,
+    data_area,
+    promedio_final,
+    fila,
+    td
+) {
+    $.ajax({
+        headers: {
+            "x-csrf-token": $("#token").val(),
+        },
+        type: "POST",
+        url: $("#urlStoreCalificacion").val(),
+        data: {
+            calificacion: calificacion_id,
+            actividad: data_actividad,
+            nota: nota,
+            promedio: suma_calificacion,
+            area: data_area,
+            promedio_final: promedio_final,
+            trimestre: select_trimestre.val(),
+        },
+        dataType: "json",
+        success: function (response) {
+            if (response.error_nota) {
+                swal.fire({
+                    title: "Error",
+                    icon: "error",
+                    text: `La nota no puede superar los ${response.maximo} puntos.`,
+                    confirmButtonText: "Aceptar",
+                    confirmButtonColor: "#007bff",
+                });
+                td.children("input").val(response.nota);
+                calculaPromedio(td);
+            }
+
+            fila.addClass("correcto");
+            setTimeout(function () {
+                fila.removeClass("correcto");
+            }, 700);
+        },
+    });
+}
 
 function calculaPromedio(td) {
     let fila = td.closest(".fila");
