@@ -112,7 +112,7 @@
                 <div class="card">
                     <div class="card-body" style="overflow:hidden">
                         <div class="image-area">
-                        <img id="imagen_p" src="{{ asset('imgs/users/'.$user->foto) }}" alt="Imagen de perfil" width="128px" height="128px" />
+                        <img id="imagen_p" src="{{ $user->url_foto }}" alt="Imagen de perfil" width="128px" height="128px" />
                         </div>
                         <div class="content-area">
                             {!! Form::open(['route'=>['users.config_update_foto',Auth::user()->id],'method'=>'POST','class'=>'form-horizontal','id'=>'form_foto','files'=>'true']) !!}

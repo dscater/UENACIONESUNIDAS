@@ -23,12 +23,28 @@ class User extends Authenticatable
     ];
 
     protected $appends = ["url_foto"];
-    
+
     public function getUrlFotoAttribute()
     {
+        if ($this->administrativo) {
+            if (file_exists(public_path("imgs/users/" . $this->administrativo->foto))) {
+                return asset("imgs/users/" . $this->administrativo->foto);
+            }
+        }
+        if ($this->profesor) {
+            if (file_exists(public_path("imgs/users/" . $this->profesor->foto))) {
+                return asset("imgs/users/" . $this->profesor->foto);
+            }
+        }
+        if ($this->estudiante) {
+            if (file_exists(public_path("imgs/users/" . $this->estudiante->foto))) {
+                return asset("imgs/users/" . $this->estudiante->foto);
+            }
+        }
         if (file_exists(public_path("imgs/users/" . $this->foto))) {
             return asset("imgs/users/" . $this->foto);
         }
+
         return asset("imgs/users/user_default.png");
     }
 
